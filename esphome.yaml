@@ -31,12 +31,12 @@ external_components:
     refresh: 0s
 
 esp32:
-  board: adafruit_feather_esp32s3
+  board: esp32-s3-devkitc-1
   framework:
     type: arduino
 
-dashboard_import:
-  package_import_url: github://Tysonpower/HCPBridgeMqtt_tynet/esphome.yaml@main
+# dashboard_import:
+#   package_import_url: github://Tysonpower/HCPBridgeMqtt_tynet/esphome.yaml@main
 
 i2c:
   sda: GPIO06
