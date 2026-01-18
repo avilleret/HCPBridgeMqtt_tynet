@@ -25,6 +25,13 @@ esphome:
     board_build.flash_mode: qio
     monitor_speed: 9600
     monitor_filters: esp32_exception_decoder
+  on_boot:
+    priority: -100
+    then:
+      - delay: 2s
+      - logger.log:
+          format: "HCPBridge initialized and ready. Waiting for Hormann bus scan..."
+          level: INFO
 
 external_components:
     source: github://Tysonpower/esphome-hcpbridge
@@ -157,6 +164,14 @@ api:
     - service: toggle
       then:
         - cover.toggle: garagedoor_cover
+    - service: check_connection
+      then:
+        - lambda: |-
+            ESP_LOGI("api", "Connection check - Connected: %s, Valid: %s", 
+                     id(sensor_connected).state ? "true" : "false",
+                     id(hcpbridge_id)->engine->state->valid ? "true" : "false");
+            ESP_LOGI("api", "Last Modbus response age: %ld seconds", 
+                     id(hcpbridge_id)->engine->state->responseAge());
 
 web_server:
   port: 80
